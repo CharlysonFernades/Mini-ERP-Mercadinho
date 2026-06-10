@@ -35,6 +35,9 @@ funcoes.py
 compras.py
 Estoque.json
 
+## Arquivo de exemplo
+
+O arquivo `Estoque.json` presente no repositório contém dados fictícios apenas para demonstração das funcionalidades do sistema.
 ## Como executar
 
 1. Baixe os arquivos do projeto
