@@ -22,7 +22,10 @@ opcoes = {
     "Atualizar preço": 5,
     "Atualizar estoque mínimo":6,
     "Mostrar estoque": 7,
-    "Sair": 8,
+    "Relatório financeiro": 8,
+    "Relatório situacional": 9,
+    "Resumo gerencial": 10,
+    "Sair": 11,
 }
 
 
@@ -215,3 +218,72 @@ def atualizar_estoque_minimo():
             estoque[produto]["Estoque Minimo"] = novo_minimo
             print("Estoque mínimo atualizado!")
             break
+
+def somar_valores_estoque():
+    total = 0
+    for dados in estoque.values():
+        total += (dados['Qtde'] * dados['Preço Unitário'])
+
+    return total
+
+def mostrar_relatorio_financeiro():
+    total_estoque = somar_valores_estoque()
+    print(f'\n- O Valor Total do Estoque encontra-se em: R$ {total_estoque:.2f}')
+    
+def mostrar_relatorio_situacional():
+    print('\nProdutos em situações críticas:')
+    linha()
+    for produto, dados in estoque.items():
+        status = mostrar_status(produto)
+        qde = dados['Qtde']
+        minimo = dados['Estoque Minimo']
+        qde_pendente = minimo - qde
+        qde_acima_do_minimo = qde - minimo
+        if status != "Em estoque":
+            print(f'Produto: {produto.title()}')
+            print()
+            if qde == minimo:
+                print(f'Quantidade atual: {qde} ')
+                print(f'Estoque mínimo: {minimo} ')
+                print()
+                print('ATENÇÃO:')
+                print(f'A quantidade em estoque atingiu o limite MÍNIMO para este produto')
+            elif qde < minimo:
+                print(f'Quantidade atual: {qde} ')
+                print(f'Estoque mínimo: {minimo} ')
+                print()
+                print('ATENÇÃO:')
+                print(f'Necessário repor: {qde_pendente} unidades.')
+            else:
+                print(f'Quantidade em estoque: {qde}')
+                print(f'Estoque mínimo: {minimo} ')
+                print()
+                print("ATENÇÃO:")
+                print(f'Restam apenas {qde_acima_do_minimo} unidades para chegar no nível MÍNIMO de estoque! ')
+            print()
+            print(f'Situação: {status}')
+            linha()
+    
+def mostrar_resumo():
+    prod_em_alerta = 0
+    prod_estoque_baixo = 0
+    total_produtos = len(estoque)
+    financeiro = somar_valores_estoque()
+    valor_medio = (financeiro/total_produtos)
+    for produto, dados in estoque.items():
+        status = mostrar_status(produto)
+        if status == 'Alerta!!!':
+            prod_em_alerta += 1
+        elif status == "Estoque Baixo":
+            prod_estoque_baixo += 1
+    
+    print("\nRESUMO GERAL")
+    linha()
+    print(f'\n- Produtos cadastrados: {total_produtos}')
+    print(f"\n- Produtos em alerta: {prod_em_alerta}")
+    print(f"\n- Produtos com estoque baixo: {prod_estoque_baixo}")
+    print(f'\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}')
+    mostrar_relatorio_financeiro()
+    print(f'\n- Valor médio por produto: R$ {valor_medio}')
+    linha()
+mostrar_resumo()
