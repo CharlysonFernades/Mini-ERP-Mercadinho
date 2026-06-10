@@ -19,6 +19,9 @@ O sistema permite gerenciar produtos através de um terminal em Python.
 - Atualização de preços
 - Estoque mínimo
 - Alertas de reposição
+- Relatório financeiro
+- Relatório situacional
+- Resumo gerencial
 - Persistência em JSON
 
 ## Tecnologias utilizadas
