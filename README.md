@@ -32,6 +32,14 @@ funcoes.py
 compras.py
 Estoque.json
 
+## Como executar
+
+1. Baixe os arquivos do projeto
+2. Certifique-se de ter Python instalado
+3. Execute:
+
+python compras.py
+
 ## Melhorias futuras
 
 - Exportação para Excel
