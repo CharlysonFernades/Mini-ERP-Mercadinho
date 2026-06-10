@@ -5,8 +5,23 @@
         "Estoque Minimo": 10
     },
     "feijao": {
+        "Qtde": 8,
+        "Preço Unitário": 8.5,
+        "Estoque Minimo": 10
+    },
+    "macarrao": {
+        "Qtde": 30,
+        "Preço Unitário": 4.0,
+        "Estoque Minimo": 15
+    },
+    "acucar": {
         "Qtde": 15,
-        "Preço Unitário": 8.0,
-        "Estoque Minimo": 5
+        "Preço Unitário": 6.0,
+        "Estoque Minimo": 15
+    },
+    "cafe": {
+        "Qtde": 5,
+        "Preço Unitário": 12.0,
+        "Estoque Minimo": 10
     }
 }
