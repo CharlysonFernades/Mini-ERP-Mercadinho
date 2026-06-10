@@ -1,0 +1,12 @@
+{
+    "arroz": {
+        "Qtde": 20,
+        "Preço Unitário": 5.0,
+        "Estoque Minimo": 10
+    },
+    "feijao": {
+        "Qtde": 15,
+        "Preço Unitário": 8.0,
+        "Estoque Minimo": 5
+    }
+}
