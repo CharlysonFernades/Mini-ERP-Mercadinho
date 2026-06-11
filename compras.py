@@ -18,6 +18,9 @@ from funçoes import (
     mostrar_relatorio_financeiro,
     mostrar_relatorio_situacional,
     mostrar_resumo,
+    mostrar_historico,
+    carregar_historico,
+    salvar_historico,
 )
 
 import os
@@ -73,6 +76,10 @@ while True:
         continue
 
     elif resposta == 11:
+        mostrar_historico()
+        continue
+
+    elif resposta == 12:
         print("\n   Saindo do sistema... ")
         linha()
         break
