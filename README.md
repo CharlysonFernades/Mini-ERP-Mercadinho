@@ -12,17 +12,35 @@ O sistema permite gerenciar produtos através de um terminal em Python.
 
 ## Funcionalidades
 
-- Cadastro de produtos
-- Controle de estoque
-- Reposição de mercadorias
-- Registro de vendas
-- Atualização de preços
-- Estoque mínimo
-- Alertas de reposição
-- Relatório financeiro
-- Relatório situacional
-- Resumo gerencial
-- Persistência em JSON
+* Cadastro de produtos
+* Controle de estoque
+* Reposição de mercadorias
+* Registro de vendas
+* Atualização de preços
+* Configuração de estoque mínimo
+* Alertas automáticos de reposição
+* Relatório financeiro
+
+  * Valor total do estoque
+  * Valor médio por produto
+* Relatório situacional
+
+  * Produtos em estoque baixo
+  * Produtos em situação crítica
+* Resumo gerencial
+
+  * Total de produtos cadastrados
+  * Quantidade de produtos em alerta
+  * Quantidade de produtos com estoque baixo
+  * Quantidade de produtos em situação normal
+* Histórico de movimentações
+
+  * Registro de compras
+  * Registro de vendas
+  * Registro de novos cadastros
+  * Data e hora das operações
+* Persistência de dados em JSON
+
 
 ## Tecnologias utilizadas
 
@@ -49,5 +67,8 @@ python compras.py
 ## Melhorias futuras
 
 - Exportação para Excel
-- Histórico de movimentações
-- Relatórios financeiros
+- Filtro de histórico por produto
+- Relatório de produtos mais vendidos
+- Relatório de produtos mais comprados
+- Integração com Pandas
+- Dashboard Gerencial
