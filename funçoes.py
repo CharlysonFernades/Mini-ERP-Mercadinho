@@ -1,12 +1,34 @@
 import os
 import json
+from datetime import datetime
 
 CAMINHO_JSON = os.path.join(
     os.path.dirname(__file__),
     "Estoque.json"
 )
+CAMINHO_JS_HISTORICO = os.path.join(
+    os.path.dirname(__file__),
+    "Historico_de_movimentações.json"
+)
 
+def salvar_historico():
+    with open(CAMINHO_JS_HISTORICO, "w") as arquivo:
+        json.dump(
+            historico,
+            arquivo,
+            indent=4,
+            ensure_ascii=False
+            )
 
+def carregar_historico():
+    try:
+        with open(CAMINHO_JS_HISTORICO, "r") as arquivo:
+            historico = json.load(arquivo)
+        return historico
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+    
+historico = carregar_historico()
 # Para mostrar o menu:
 
 
@@ -25,7 +47,8 @@ opcoes = {
     "Relatório financeiro": 8,
     "Relatório situacional": 9,
     "Resumo gerencial": 10,
-    "Sair": 11,
+    "Histórico de movimentações": 11,
+    "Sair": 12,
 }
 
 
@@ -97,7 +120,7 @@ def escolha():
             return escolha
         else:
             print("Você precisa escolher uma opção válida!")
-
+        
 
 def salvar_estoque():
     with open(CAMINHO_JSON, "w") as arquivo:
@@ -132,6 +155,12 @@ def cadastrar_produto():
         "Estoque Minimo": estoque_minimo,
     }
 
+    registrar_movimentação(
+        "Cadastro",
+        nome,
+        qde_compra
+        )
+
 def repor_estoque():
     produto = pedir_produto()
     quantidade = validar_quantidade('Digite a quantidade comprada: ')
@@ -141,10 +170,19 @@ def repor_estoque():
         estoque[produto]['Qtde'] += quantidade
         print(f"Novo estoque de {produto}: {estoque[produto]['Qtde']}")
 
+        registrar_movimentação(
+            "Compra",
+            produto,
+            quantidade
+        )
+
 def remover_produto():
     produto = pedir_produto()
     if produto in estoque:
         qde_venda = validar_quantidade("Informe a quantidade vendida: ")
+
+        registrar_movimentação("Venda", produto, qde_venda)
+
         if qde_venda <= estoque[produto]["Qtde"]:
             estoque[produto]["Qtde"] -= qde_venda
             if estoque[produto]["Qtde"] == 0:
@@ -153,7 +191,10 @@ def remover_produto():
                 resposta = validar_nome('Digite sua resposta: ')
                 if resposta == 's':
                     del estoque[produto]
+        
+        
         else:
+
             print("\n Não há estoque suficiente!")
     else:
         print("O produto não se encontra no estoque!")
@@ -286,4 +327,25 @@ def mostrar_resumo():
     mostrar_relatorio_financeiro()
     print(f'\n- Valor médio por produto: R$ {valor_medio}')
     linha()
-mostrar_resumo()
+
+def registrar_movimentação(tipo,produto,quantidade):
+    registro = {
+        "Data": datetime.now().strftime("%d/%m/%Y"),
+        "Hora": datetime.now().strftime("%H:%M:%S"),
+        "Operação": tipo,
+        "Produto": produto,
+        "Quantidade": quantidade
+    }
+
+    historico.append(registro)
+    salvar_historico()
+
+def mostrar_historico():
+    for registro in historico:
+        print(
+            f"{registro['Data']} | "
+            f"{registro['Hora']} | "
+            f"{registro['Operação']} | "
+            f"{registro['Produto']} | "
+            f"{registro['Quantidade']} | "
+            )
