@@ -2,23 +2,16 @@ import os
 import json
 from datetime import datetime
 
-CAMINHO_JSON = os.path.join(
-    os.path.dirname(__file__),
-    "Estoque.json"
-)
+CAMINHO_JSON = os.path.join(os.path.dirname(__file__), "Estoque.json")
 CAMINHO_JS_HISTORICO = os.path.join(
-    os.path.dirname(__file__),
-    "Historico_de_movimentações.json"
+    os.path.dirname(__file__), "Historico_de_movimentações.json"
 )
+
 
 def salvar_historico():
     with open(CAMINHO_JS_HISTORICO, "w") as arquivo:
-        json.dump(
-            historico,
-            arquivo,
-            indent=4,
-            ensure_ascii=False
-            )
+        json.dump(historico, arquivo, indent=4, ensure_ascii=False)
+
 
 def carregar_historico():
     try:
@@ -27,7 +20,8 @@ def carregar_historico():
         return historico
     except (FileNotFoundError, json.JSONDecodeError):
         return []
-    
+
+
 historico = carregar_historico()
 # Para mostrar o menu:
 
@@ -38,11 +32,11 @@ def linha():
 
 opcoes = {
     "Adicionar produto": 1,
-    "Repor estoque":2,
+    "Repor estoque": 2,
     "Remover produto (Venda)": 3,
     "Atualizar estoque do produto": 4,
     "Atualizar preço": 5,
-    "Atualizar estoque mínimo":6,
+    "Atualizar estoque mínimo": 6,
     "Mostrar estoque": 7,
     "Relatório financeiro": 8,
     "Relatório situacional": 9,
@@ -120,7 +114,7 @@ def escolha():
             return escolha
         else:
             print("Você precisa escolher uma opção válida!")
-        
+
 
 def salvar_estoque():
     with open(CAMINHO_JSON, "w") as arquivo:
@@ -142,7 +136,7 @@ estoque = carregar_estoque()
 def cadastrar_produto():
     nome = pedir_produto()
     if nome in estoque:
-        print('Este produto já está cadastrado!')
+        print("Este produto já está cadastrado!")
         return
     qde_compra = validar_quantidade("Informe a quantidade comprada: ")
     preco_unit = pedir_preco("Digite o preço unitário do produto:")
@@ -155,26 +149,20 @@ def cadastrar_produto():
         "Estoque Minimo": estoque_minimo,
     }
 
-    registrar_movimentação(
-        "Cadastro",
-        nome,
-        qde_compra
-        )
+    registrar_movimentação("Cadastro", nome, qde_compra)
+
 
 def repor_estoque():
     produto = pedir_produto()
-    quantidade = validar_quantidade('Digite a quantidade comprada: ')
+    quantidade = validar_quantidade("Digite a quantidade comprada: ")
     if produto not in estoque:
-        print('Este produto não está cadastrado!')
+        print("Este produto não está cadastrado!")
     else:
-        estoque[produto]['Qtde'] += quantidade
+        estoque[produto]["Qtde"] += quantidade
         print(f"Novo estoque de {produto}: {estoque[produto]['Qtde']}")
 
-        registrar_movimentação(
-            "Compra",
-            produto,
-            quantidade
-        )
+        registrar_movimentação("Compra", produto, quantidade)
+
 
 def remover_produto():
     produto = pedir_produto()
@@ -187,12 +175,11 @@ def remover_produto():
             estoque[produto]["Qtde"] -= qde_venda
             if estoque[produto]["Qtde"] == 0:
                 print(f"O estoque de {produto} chegou a ZERO!")
-                print('Deseja remover o produto do estoque? (s/n)')
-                resposta = validar_nome('Digite sua resposta: ')
-                if resposta == 's':
+                print("Deseja remover o produto do estoque? (s/n)")
+                resposta = validar_nome("Digite sua resposta: ")
+                if resposta == "s":
                     del estoque[produto]
-        
-        
+
         else:
 
             print("\n Não há estoque suficiente!")
@@ -233,20 +220,21 @@ def mostrar_estoque():
         print(f"- Preço Unitário: R$ {dados['Preço Unitário']}")
         total = dados["Qtde"] * dados["Preço Unitário"]
 
-
         print(f"- Total em Estoque: R$ {total:.2f}")
         status = mostrar_status(produto)
         print(f"- Situação: {status}")
         linha()
 
+
 def mostrar_status(produto):
-    estoque_minimo = estoque[produto]['Estoque Minimo']
+    estoque_minimo = estoque[produto]["Estoque Minimo"]
     if estoque[produto]["Qtde"] >= (1.4 * estoque_minimo):
         return "Em estoque"
     elif estoque[produto]["Qtde"] >= estoque_minimo:
         return "Estoque Baixo"
     else:
         return "Alerta!!!"
+
 
 def atualizar_estoque_minimo():
     while True:
@@ -255,90 +243,104 @@ def atualizar_estoque_minimo():
             print("Este produto não encontra-se no estoque!")
             continue
         else:
-            novo_minimo = validar_quantidade(f'Digite o novo estoque mínimo de {produto}: ')
+            novo_minimo = validar_quantidade(
+                f"Digite o novo estoque mínimo de {produto}: "
+            )
             estoque[produto]["Estoque Minimo"] = novo_minimo
             print("Estoque mínimo atualizado!")
             break
 
+
 def somar_valores_estoque():
     total = 0
     for dados in estoque.values():
-        total += (dados['Qtde'] * dados['Preço Unitário'])
+        total += dados["Qtde"] * dados["Preço Unitário"]
 
     return total
 
+
 def mostrar_relatorio_financeiro():
     total_estoque = somar_valores_estoque()
-    print(f'\n- O Valor Total do Estoque encontra-se em: R$ {total_estoque:.2f}')
-    
+    print(f"\n- O Valor Total do Estoque encontra-se em: R$ {total_estoque:.2f}")
+
+
 def mostrar_relatorio_situacional():
-    print('\nProdutos em situações críticas:')
+    print("\nProdutos em situações críticas:")
     linha()
     for produto, dados in estoque.items():
         status = mostrar_status(produto)
-        qde = dados['Qtde']
-        minimo = dados['Estoque Minimo']
+        qde = dados["Qtde"]
+        minimo = dados["Estoque Minimo"]
         qde_pendente = minimo - qde
         qde_acima_do_minimo = qde - minimo
         if status != "Em estoque":
-            print(f'Produto: {produto.title()}')
+            print(f"Produto: {produto.title()}")
             print()
             if qde == minimo:
-                print(f'Quantidade atual: {qde} ')
-                print(f'Estoque mínimo: {minimo} ')
-                print()
-                print('ATENÇÃO:')
-                print(f'A quantidade em estoque atingiu o limite MÍNIMO para este produto')
-            elif qde < minimo:
-                print(f'Quantidade atual: {qde} ')
-                print(f'Estoque mínimo: {minimo} ')
-                print()
-                print('ATENÇÃO:')
-                print(f'Necessário repor: {qde_pendente} unidades.')
-            else:
-                print(f'Quantidade em estoque: {qde}')
-                print(f'Estoque mínimo: {minimo} ')
+                print(f"Quantidade atual: {qde} ")
+                print(f"Estoque mínimo: {minimo} ")
                 print()
                 print("ATENÇÃO:")
-                print(f'Restam apenas {qde_acima_do_minimo} unidades para chegar no nível MÍNIMO de estoque! ')
+                print(
+                    f"A quantidade em estoque atingiu o limite MÍNIMO para este produto"
+                )
+            elif qde < minimo:
+                print(f"Quantidade atual: {qde} ")
+                print(f"Estoque mínimo: {minimo} ")
+                print()
+                print("ATENÇÃO:")
+                print(f"Necessário repor: {qde_pendente} unidades.")
+            else:
+                print(f"Quantidade em estoque: {qde}")
+                print(f"Estoque mínimo: {minimo} ")
+                print()
+                print("ATENÇÃO:")
+                print(
+                    f"Restam apenas {qde_acima_do_minimo} unidades para chegar no nível MÍNIMO de estoque! "
+                )
             print()
-            print(f'Situação: {status}')
+            print(f"Situação: {status}")
             linha()
-    
+
+
 def mostrar_resumo():
     prod_em_alerta = 0
     prod_estoque_baixo = 0
     total_produtos = len(estoque)
     financeiro = somar_valores_estoque()
-    valor_medio = (financeiro/total_produtos)
+    valor_medio = financeiro / total_produtos
     for produto, dados in estoque.items():
         status = mostrar_status(produto)
-        if status == 'Alerta!!!':
+        if status == "Alerta!!!":
             prod_em_alerta += 1
         elif status == "Estoque Baixo":
             prod_estoque_baixo += 1
-    
+
     print("\nRESUMO GERAL")
     linha()
-    print(f'\n- Produtos cadastrados: {total_produtos}')
+    print(f"\n- Produtos cadastrados: {total_produtos}")
     print(f"\n- Produtos em alerta: {prod_em_alerta}")
     print(f"\n- Produtos com estoque baixo: {prod_estoque_baixo}")
-    print(f'\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}')
+    print(
+        f"\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}"
+    )
     mostrar_relatorio_financeiro()
-    print(f'\n- Valor médio por produto: R$ {valor_medio}')
+    print(f"\n- Valor médio por produto: R$ {valor_medio}")
     linha()
 
-def registrar_movimentação(tipo,produto,quantidade):
+
+def registrar_movimentação(tipo, produto, quantidade):
     registro = {
         "Data": datetime.now().strftime("%d/%m/%Y"),
         "Hora": datetime.now().strftime("%H:%M:%S"),
         "Operação": tipo,
         "Produto": produto,
-        "Quantidade": quantidade
+        "Quantidade": quantidade,
     }
 
     historico.append(registro)
     salvar_historico()
+
 
 def mostrar_historico():
     for registro in historico:
@@ -348,4 +350,4 @@ def mostrar_historico():
             f"{registro['Operação']} | "
             f"{registro['Produto']} | "
             f"{registro['Quantidade']} | "
-            )
+        )
