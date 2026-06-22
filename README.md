@@ -34,7 +34,7 @@ O sistema permite gerenciar produtos através de um terminal em Python.
   * Quantidade de produtos com estoque baixo
   * Quantidade de produtos em situação normal
 * Histórico de movimentações
-
+  
   * Registro de compras
   * Registro de vendas
   * Registro de novos cadastros
@@ -52,10 +52,11 @@ O sistema permite gerenciar produtos através de um terminal em Python.
 funcoes.py
 compras.py
 Estoque.json
+Historico_de_movimentações.json
 
 ## Arquivo de exemplo
 
-O arquivo `Estoque.json` presente no repositório contém dados fictícios apenas para demonstração das funcionalidades do sistema.
+O arquivo `Estoque.json` presente no repositório consta vazio para que o usuário consiga testar o sistema desde o início; validando, portanto, o histórico de movimentações de cada ação.
 ## Como executar
 
 1. Baixe os arquivos do projeto
@@ -67,7 +68,6 @@ python compras.py
 ## Melhorias futuras
 
 - Exportação para Excel
-- Filtro de histórico por produto
 - Relatório de produtos mais vendidos
 - Relatório de produtos mais comprados
 - Integração com Pandas
