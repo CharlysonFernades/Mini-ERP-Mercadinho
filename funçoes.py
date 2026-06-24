@@ -42,7 +42,8 @@ opcoes = {
     "Relatório situacional": 9,
     "Resumo gerencial": 10,
     "Histórico de movimentações": 11,
-    "Sair": 12,
+    "Ranking de Movimentações": 12,
+    "Sair": 13,
 }
 
 
@@ -325,7 +326,7 @@ def mostrar_resumo():
         f"\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}"
     )
     mostrar_relatorio_financeiro()
-    print(f"\n- Valor médio por produto: R$ {valor_medio}")
+    print(f"\n- Valor médio por produto: R$ {valor_medio:.2f}")
     linha()
 
 
@@ -351,3 +352,50 @@ def mostrar_historico():
             f"{registro['Produto']} | "
             f"{registro['Quantidade']} | "
         )
+
+
+maior_venda = 0
+maior_compra = 0
+compras = {}
+vendas = {}
+
+for registro in historico:
+    if registro["Operação"] == "Venda":
+        produto = registro["Produto"]
+        quantidade = registro["Quantidade"]
+        if produto not in vendas:
+            vendas[produto] = quantidade
+        else:
+            vendas[produto] += quantidade
+
+    elif registro["Operação"] in ["Compra", "Cadastro"]:
+        quantidade = registro["Quantidade"]
+        produto = registro["Produto"]
+        if produto not in compras:
+            compras[produto] = quantidade
+        else:
+            compras[produto] += quantidade
+
+
+def mostrar_mais_comprado():
+    print("PRODUTOS MAIS COMPRADOS")
+    linha()
+    i = 0
+    for qd in sorted(compras, key=compras.get, reverse=True):
+        i += 1
+        if qd not in compras:
+            continue
+        if i < 4:
+            print(f"{i}º Lugar - {qd.title()}: {compras[qd]}")
+
+
+def mostrar_mais_vendido():
+    print("PRODUTOS MAIS VENDIDOS")
+    linha()
+    i = 0
+    for qde in sorted(vendas, key=vendas.get, reverse=True):
+        i += 1
+        if qde not in vendas:
+            continue
+        if i < 4:
+            print(f"{i}º Lugar - {qde.title()}: {vendas[qde]}")
