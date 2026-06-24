@@ -39,6 +39,8 @@ O sistema permite gerenciar produtos através de um terminal em Python.
   * Registro de vendas
   * Registro de novos cadastros
   * Data e hora das operações
+  * Ranking de produtos mais vendidos
+  * Ranking de produtos mais comprados
 * Persistência de dados em JSON
 
 
@@ -68,7 +70,5 @@ python compras.py
 ## Melhorias futuras
 
 - Exportação para Excel
-- Relatório de produtos mais vendidos
-- Relatório de produtos mais comprados
 - Integração com Pandas
 - Dashboard Gerencial
