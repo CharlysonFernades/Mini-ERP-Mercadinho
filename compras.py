@@ -21,6 +21,8 @@ from funçoes import (
     mostrar_historico,
     carregar_historico,
     salvar_historico,
+    mostrar_mais_comprado,
+    mostrar_mais_vendido
 )
 
 import os
@@ -80,6 +82,12 @@ while True:
         continue
 
     elif resposta == 12:
+        mostrar_mais_vendido()
+        linha()
+        mostrar_mais_comprado()
+        continue
+    
+    elif resposta == 13:
         print("\n   Saindo do sistema... ")
         linha()
         break
