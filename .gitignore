@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Interface local: dados de demonstração e diário de gravação
+.erp-demo/
+.erp-transaction.json
+.erp-*.tmp

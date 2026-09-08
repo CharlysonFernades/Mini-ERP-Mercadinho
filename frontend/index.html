@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#112f28">
+  <meta name="description" content="Gerencie produtos, acompanhe seu estoque e registre compras e vendas no Mini ERP Mercadinho.">
+  <title>Visão geral · Mercadinho ERP</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <aside class="sidebar" aria-label="Menu principal">
+    <a class="brand" href="#overview" aria-label="Mercadinho ERP, visão geral"><img src="/favicon.svg" alt="" width="42" height="42"><span>mercadinho<span class="brand-sub">GESTÃO DO SEU NEGÓCIO</span></span></a>
+    <div class="store-label"><span class="store-avatar" data-icon="store"></span><span><strong>Meu mercadinho</strong><small>Mini ERP</small></span><span class="store-chevron" data-icon="chevron-down"></span></div>
+    <span class="nav-label">PRINCIPAL</span>
+    <nav>
+      <a href="#overview" data-nav="overview" class="nav-item active" aria-current="page"><span data-icon="dashboard"></span><span>Visão geral</span></a>
+      <a href="#products" data-nav="products" class="nav-item"><span data-icon="package"></span><span>Produtos e estoque</span></a>
+      <a href="#movements" data-nav="movements" class="nav-item"><span data-icon="arrows"></span><span>Movimentações</span></a>
+      <a href="#reports" data-nav="reports" class="nav-item"><span data-icon="chart"></span><span>Relatórios</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="sidebar-note"><span data-icon="shield"></span><p>Cada movimento conta.<br><strong>Mantenha seu estoque em dia.</strong></p></div><div class="sidebar-footer"><span class="mini-mark">m.</span><span>Mini ERP Mercadinho<small>Controle simples. Rotina organizada.</small></span></div></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="breadcrumb"><span data-icon="store"></span><span>Meu mercadinho</span><span class="separator">/</span><strong id="breadcrumb-page">Visão geral</strong></div><div class="topbar-right"><span id="demo-badge" class="demo-badge" hidden>Demonstração</span><button class="icon-button refresh-button" data-action="refresh" aria-label="Atualizar dados" title="Atualizar dados"><span data-icon="refresh"></span></button><span class="avatar" title="Meu mercadinho">MM</span></div></header>
+    <main id="main" tabindex="-1"><div class="loading-state" role="status"><span class="spinner"></span>Carregando seu mercadinho…</div></main>
+    <footer class="page-footer"><span>Mercadinho ERP</span><span id="sync-label">Conectando…</span></footer>
+  </div>
+  <nav class="mobile-nav" aria-label="Navegação no celular"><a href="#overview" data-mobile-nav="overview" aria-current="page"><span data-icon="dashboard"></span><span>Início</span></a><a href="#products" data-mobile-nav="products"><span data-icon="package"></span><span>Estoque</span></a><a href="#movements" data-mobile-nav="movements"><span data-icon="arrows"></span><span>Histórico</span></a><a href="#reports" data-mobile-nav="reports"><span data-icon="chart"></span><span>Relatórios</span></a></nav>
+  <dialog id="form-dialog" aria-labelledby="dialog-title"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>Ative o JavaScript no navegador para usar o painel do Mercadinho ERP.</noscript>
+</body>
+</html>

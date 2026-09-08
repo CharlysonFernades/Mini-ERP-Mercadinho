@@ -1,0 +1,7 @@
+{
+  "name": "mini-erp-mercadinho-preview",
+  "private": true,
+  "scripts": {
+    "dev": "python3 web_server.py --demo --host 0.0.0.0 --port 4173"
+  }
+}
