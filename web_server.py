@@ -51,7 +51,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self.response(200, {**self.server.store.snapshot(), "csrf": self.server.csrf})
             except (ERPError, OSError) as error:
                 return self.response(getattr(error, "status", 500), {"error": str(error) if isinstance(error, ERPError) else "Não foi possível acessar os dados."})
-        files = {"/": "index.html", "/index.html": "index.html", "/app.js": "app.js", "/styles.css": "styles.css", "/favicon.svg": "favicon.svg"}
+        files = {
+            "/": "index.html",
+            "/index.html": "index.html",
+            "/app.js": "app.js",
+            "/styles.css": "styles.css",
+            "/enhancements.css": "enhancements.css",
+            "/favicon.svg": "favicon.svg",
+        }
         if path not in files:
             return self.response(404, {"error": "Página não encontrada."})
         file = STATIC / files[path]
