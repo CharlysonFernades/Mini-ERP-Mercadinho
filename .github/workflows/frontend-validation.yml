@@ -1,0 +1,108 @@
+name: Validate ERP frontend
+
+on:
+  push:
+    branches:
+      - frontend/painel-mercadinho
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run integration tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Check frontend JavaScript syntax
+        run: node --check frontend/app.js
+
+      - name: Start demo server
+        run: |
+          python web_server.py --demo --host 127.0.0.1 --port 4173 > /tmp/erp-server.log 2>&1 &
+          echo $! > /tmp/erp-server.pid
+
+      - name: Smoke test browser endpoints and API
+        run: |
+          python - <<'PY'
+          import json
+          import time
+          import urllib.request
+
+          base = 'http://127.0.0.1:4173'
+          last_error = None
+          for _ in range(30):
+              try:
+                  with urllib.request.urlopen(base + '/') as response:
+                      html = response.read().decode('utf-8')
+                      assert response.status == 200
+                      assert 'Mercadinho ERP' in html
+                      assert 'Registrar venda' in html
+                      assert '/enhancements.css' in html
+                  break
+              except Exception as exc:
+                  last_error = exc
+                  time.sleep(0.2)
+          else:
+              raise RuntimeError(f'Servidor não iniciou: {last_error}')
+
+          with urllib.request.urlopen(base + '/enhancements.css') as response:
+              css = response.read().decode('utf-8')
+              assert response.status == 200
+              assert '.quick-sale-mobile' in css
+
+          with urllib.request.urlopen(base + '/api/state') as response:
+              state = json.load(response)
+              assert response.status == 200
+              assert state['demo'] is True
+              assert state['summary']['products'] >= 1
+              assert state['csrf']
+
+          token = state['csrf']
+          product = state['products'][0]
+          payload = json.dumps({
+              'name': product['name'],
+              'quantity': 1,
+              'operation': 'Venda',
+          }).encode('utf-8')
+          request = urllib.request.Request(
+              base + '/api/movements',
+              data=payload,
+              method='POST',
+              headers={
+                  'Content-Type': 'application/json',
+                  'X-ERP-Token': token,
+              },
+          )
+          with urllib.request.urlopen(request) as response:
+              result = json.load(response)
+              updated = next(item for item in result['products'] if item['name'] == product['name'])
+              assert updated['quantity'] == product['quantity'] - 1
+
+          print('Frontend, API e venda de demonstração validados com sucesso.')
+          PY
+
+      - name: Stop demo server
+        if: always()
+        run: |
+          if [ -f /tmp/erp-server.pid ]; then
+            kill "$(cat /tmp/erp-server.pid)" 2>/dev/null || true
+          fi
+          cat /tmp/erp-server.log 2>/dev/null || true
