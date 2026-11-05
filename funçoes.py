@@ -170,10 +170,10 @@ def remover_produto():
     if produto in estoque:
         qde_venda = validar_quantidade("Informe a quantidade vendida: ")
 
-        registrar_movimentação("Venda", produto, qde_venda)
 
         if qde_venda <= estoque[produto]["Qtde"]:
             estoque[produto]["Qtde"] -= qde_venda
+            registrar_movimentação("Venda", produto, qde_venda)
             if estoque[produto]["Qtde"] == 0:
                 print(f"O estoque de {produto} chegou a ZERO!")
                 print("Deseja remover o produto do estoque? (s/n)")
@@ -309,7 +309,7 @@ def mostrar_resumo():
     prod_estoque_baixo = 0
     total_produtos = len(estoque)
     financeiro = somar_valores_estoque()
-    valor_medio = financeiro / total_produtos
+    valor_medio = financeiro / total_produtos if total_produtos != 0 else 0
     for produto, dados in estoque.items():
         status = mostrar_status(produto)
         if status == "Alerta!!!":
