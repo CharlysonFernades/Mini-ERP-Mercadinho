@@ -173,13 +173,13 @@ def remover_produto():
 
         if qde_venda <= estoque[produto]["Qtde"]:
             estoque[produto]["Qtde"] -= qde_venda
-            registrar_movimentação("Venda", produto, qde_venda)
             if estoque[produto]["Qtde"] == 0:
                 print(f"O estoque de {produto} chegou a ZERO!")
                 print("Deseja remover o produto do estoque? (s/n)")
                 resposta = validar_nome("Digite sua resposta: ")
                 if resposta == "s":
                     del estoque[produto]
+            registrar_movimentação("Venda", produto, qde_venda)
 
         else:
 
