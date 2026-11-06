@@ -316,18 +316,20 @@ def mostrar_resumo():
             prod_em_alerta += 1
         elif status == "Estoque Baixo":
             prod_estoque_baixo += 1
-
-    print("\nRESUMO GERAL")
-    linha()
-    print(f"\n- Produtos cadastrados: {total_produtos}")
-    print(f"\n- Produtos em alerta: {prod_em_alerta}")
-    print(f"\n- Produtos com estoque baixo: {prod_estoque_baixo}")
-    print(
-        f"\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}"
-    )
-    mostrar_relatorio_financeiro()
-    print(f"\n- Valor médio por produto: R$ {valor_medio:.2f}")
-    linha()
+    if total_produtos:
+        print("\nRESUMO GERAL")
+        linha()
+        print(f"\n- Produtos cadastrados: {total_produtos}")
+        print(f"\n- Produtos em alerta: {prod_em_alerta}")
+        print(f"\n- Produtos com estoque baixo: {prod_estoque_baixo}")
+        print(
+            f"\n- Produtos em situação normal: {total_produtos - prod_em_alerta - prod_estoque_baixo}"
+        )
+        mostrar_relatorio_financeiro()
+        print(f"\n- Valor médio por produto: R$ {valor_medio:.2f}")
+        linha()
+    else:
+        print("\n NÃO HÁ PRODUTOS CADASTRADOS NO ESTOQUE!")
 
 
 def registrar_movimentação(tipo, produto, quantidade):
